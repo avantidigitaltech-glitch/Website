@@ -326,10 +326,15 @@ const AvantiWebsite = () => {
             </p>
           </div>
 
-          <div className="flex gap-6 text-sm font-medium text-slate-400">
-            <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
-            <a href="#" className="hover:text-white transition-colors">Instagram</a>
-            <a href="#" className="hover:text-white transition-colors">Contacto</a>
+          <div className="flex flex-col items-center md:items-end gap-4 text-sm font-medium text-slate-400">
+            <div className="flex gap-6">
+              <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+              <a href="#" className="hover:text-white transition-colors">Instagram</a>
+            </div>
+            <div className="flex flex-col items-center md:items-end gap-1">
+              <a href="mailto:avantidigitaltech@gmail.com" className="hover:text-cyan-400 transition-colors">avantidigitaltech@gmail.com</a>
+              <a href="tel:+573002436120" className="hover:text-cyan-400 transition-colors">+57 300 243 6120</a>
+            </div>
           </div>
         </div>
       </footer>
