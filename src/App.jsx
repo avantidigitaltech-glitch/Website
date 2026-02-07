@@ -330,10 +330,12 @@ const AvantiWebsite = () => {
             <div className="flex gap-6">
               <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
               <a href="#" className="hover:text-white transition-colors">Instagram</a>
+              <a href="https://www.facebook.com/profile.php?id=61587227896126" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Facebook</a>
             </div>
             <div className="flex flex-col items-center md:items-end gap-1">
               <a href="mailto:avantidigitaltech@gmail.com" className="hover:text-cyan-400 transition-colors">avantidigitaltech@gmail.com</a>
               <a href="tel:+573002436120" className="hover:text-cyan-400 transition-colors">+57 300 243 6120</a>
+              <p className="text-slate-500 mt-2 text-center md:text-right">Carrera 76 A 3 C 35<br />Medellin - Colombia</p>
             </div>
           </div>
         </div>
