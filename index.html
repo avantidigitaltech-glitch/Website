@@ -68,118 +68,131 @@
   <style>
     #rodolfo-wrapper {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      top: 0;
+      left: 0;
       z-index: 9999;
       cursor: pointer;
-      width: 100px;
-      height: 120px;
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      width: 120px;
+      height: 140px;
+      /* Adjusted container */
+      pointer-events: none;
+      /* Let mouse pass through until catch */
+      will-change: transform;
     }
 
-    #rodolfo-wrapper:hover {
-      transform: scale(1.05);
+    #rodolfo-wrapper.interactable {
+      pointer-events: auto;
     }
 
-    #rodolfo-wrapper.vibrando {
-      animation: vibration 0.2s linear infinite;
-    }
-
-    @keyframes vibration {
+    /* Vibración doble al atrapar */
+    @keyframes double-vibe {
       0% {
-        transform: rotate(0deg);
+        transform: translate(0, 0) rotate(0deg);
       }
 
-      25% {
-        transform: rotate(2deg);
+      20% {
+        transform: translate(-3px, 3px) rotate(-3deg);
       }
 
-      50% {
-        transform: rotate(0deg);
+      40% {
+        transform: translate(3px, -3px) rotate(3deg);
       }
 
-      75% {
-        transform: rotate(-2deg);
+      60% {
+        transform: translate(-3px, 3px) rotate(-3deg);
+      }
+
+      80% {
+        transform: translate(3px, -3px) rotate(3deg);
       }
 
       100% {
-        transform: rotate(0deg);
+        transform: translate(0, 0) rotate(0deg);
       }
+    }
+
+    #rodolfo-wrapper.vibrate-twice {
+      animation: double-vibe 0.2s linear 2;
+      /* 2 veces rápido */
     }
 
     #rodolfo-svg {
       width: 100%;
       height: 100%;
-      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+      filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.3));
+      overflow: visible;
     }
 
+    /* Brazos y Dedos */
+    #brazo-izq,
+    #brazo-der {
+      transform-origin: 50% 50%;
+      /* Ajustado por JS dinámicamente o CSS */
+      transition: transform 0.1s ease-out;
+    }
+
+    /* Mensaje */
     #rodolfo-mensaje {
       position: absolute;
-      bottom: 110%;
-      /* Above the bot */
-      right: 0;
-      width: 220px;
-      background: white;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px) scale(0.9);
+      width: 200px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
       color: #0F172A;
-      padding: 16px;
+      padding: 12px;
       border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       opacity: 0;
       pointer-events: none;
-      transform: translateY(10px);
-      transition: all 0.3s ease;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       font-family: 'Inter', sans-serif;
-      text-align: left;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.5);
     }
 
     #rodolfo-mensaje.activo {
       opacity: 1;
       pointer-events: auto;
-      transform: translateY(0);
+      transform: translateX(-50%) translateY(-15px) scale(1);
+    }
+
+    #rodolfo-mensaje::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      margin-left: -6px;
+      width: 12px;
+      height: 12px;
+      background: white;
+      transform: rotate(45deg);
     }
 
     #rodolfo-mensaje h3 {
-      margin: 0 0 8px 0;
-      font-size: 16px;
+      margin: 0 0 5px 0;
+      font-size: 14px;
       font-weight: 800;
       color: #0055CC;
     }
 
     #rodolfo-mensaje p {
-      margin: 0 0 12px 0;
-      font-size: 13px;
-      line-height: 1.4;
+      margin: 0 0 10px 0;
+      font-size: 11px;
+      line-height: 1.3;
       color: #475569;
     }
 
     .rodolfo-btn {
-      display: inline-block;
+      display: block;
       background: #0055CC;
       color: white;
       text-decoration: none;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 700;
-      padding: 8px 12px;
+      padding: 6px 10px;
       border-radius: 6px;
-      transition: background 0.2s;
-      width: 100%;
-      text-align: center;
-    }
-
-    .rodolfo-btn:hover {
-      background: #004499;
-    }
-
-    /* Triangulito del mensaje */
-    #rodolfo-mensaje::after {
-      content: '';
-      position: absolute;
-      bottom: -6px;
-      right: 40px;
-      width: 12px;
-      height: 12px;
-      background: white;
-      transform: rotate(45deg);
     }
   </style>
 
@@ -256,82 +269,117 @@
   </div>
 
   <script>
-        /* =========================================
-           CEREBRO DE RODOLFO (INTELIGENCIA)
-           ========================================= */
-        document.addEventListener("DOMContentLoaded", () => {
-            const wrapper = document.getElementById('rodolfo-wrapper');
-            const mensaje = document.getElementById('rodolfo-mensaje');
-    
-            // Referencias a las partes del robot
-            const pupilaIzq = document.getElementById('pupila-izq');
-            const pupilaDer = document.getElementById('pupila-der');
-            const brazoIzq  = document.getElementById('brazo-izq');
-            const brazoDer  = document.getElementById('brazo-der');
-            const dedos     = wrapper.querySelectorAll('[id*="dedo"]'); 
-    
-            let atrapado = false;
-            const DISTANCIA_ACTIVACION = 250; // Píxeles de cercanía
-    
-            // 1. ESCUCHAR EL MOUSE
-            document.addEventListener('mousemove', (e) => {
-                // Usamos requestAnimationFrame para que sea fluido
-                requestAnimationFrame(() => {
-                    const rect = wrapper.getBoundingClientRect();
-                    const centroX = rect.left + rect.width / 2;
-                    const centroY = rect.top + rect.height / 3; 
-                    
-                    // Distancia entre el mouse y Rodolfo
-                    const distMouse = Math.hypot(e.clientX - centroX, e.clientY - centroY);
-    
-                    // A) MOVER LOS OJOS
-                    if (pupilaIzq && pupilaDer) {
-                        const angulo = Math.atan2(e.clientY - centroY, e.clientX - centroX);
-                        const limite = 6; 
-                        const x = Math.cos(angulo) * Math.min(limite, distMouse / 20);
-                        const y = Math.sin(angulo) * Math.min(limite, distMouse / 20);
-                        
-                        pupilaIzq.style.transform = `translate(${x}px, ${y}px)`;
-                        pupilaDer.style.transform = `translate(${x}px, ${y}px)`;
-                    }
-    
-                    // B) REACCIÓN DE CAZA (ATRAPAR)
-                    if (distMouse < DISTANCIA_ACTIVACION) {
-                        if (!atrapado) {
-                            atrapado = true;
-                            wrapper.classList.add('vibrando');
-                            mensaje.classList.add('activo');
-    
-                            if(brazoIzq) brazoIzq.style.transform = `rotate(-20deg) translateY(-5px)`;
-                            if(brazoDer) brazoDer.style.transform = `rotate(20deg) translateY(-5px)`;
-    
-                            dedos.forEach((dedo, i) => {
-                                const dir = i % 2 === 0 ? 1 : -1;
-                                dedo.style.transform = `rotate(${10 * dir}deg) scale(0.95)`;
-                            });
-                        }
-                    } else {
-                        if (atrapado) {
-                            atrapado = false;
-                            wrapper.classList.remove('vibrando');
-                            mensaje.classList.remove('activo');
-    
-                            if(brazoIzq) brazoIzq.style.transform = `rotate(0deg)`;
-                            if(brazoDer) brazoDer.style.transform = `rotate(0deg)`;
-    
-                            dedos.forEach(dedo => {
-                                dedo.style.transform = `rotate(0deg) scale(1)`;
-                            });
-                        }
-                    }
-                });
-            });
-    
-            // Click en el robot
-            wrapper.addEventListener('click', () => {
-                 console.log("¡Click en Rodolfo!");
-            });
-        });
+    /* =========================================
+       CEREBRO DE RODOLFO 2.0 (INTELIGENCIA AVANZADA)
+       ========================================= */
+    document.addEventListener("DOMContentLoaded", () => {
+      const wrapper = document.getElementById('rodolfo-wrapper');
+      const mensaje = document.getElementById('rodolfo-mensaje');
+
+      // Referencias
+      const pupilaIzq = document.getElementById('pupila-izq');
+      const pupilaDer = document.getElementById('pupila-der');
+      const brazoIzq = document.getElementById('brazo-izq'); // Group of arm
+      const brazoDer = document.getElementById('brazo-der');
+      const dedos = wrapper.querySelectorAll('[id*="dedo"]');
+
+      // Estado y Física del Robot
+      const pos = { x: window.innerWidth - 150, y: window.innerHeight - 150 }; // Posición inicial
+      const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+      const speed = 0.05; // Velocidad de persecución (más bajo = más lag/fluido)
+      let atrapado = false;
+
+      // Offset del centro del robot (ajustar según SVG)
+      const offsetX = 60;
+      const offsetY = 70;
+
+      // Config Inicial
+      wrapper.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+
+      // 1. TRACKING DEL MOUSE
+      document.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+
+      // 2. BUCLE DE ANIMACIÓN (GAME LOOP)
+      function animate() {
+        // A) PERSECUCIÓN SUAVE (LERP)
+        // El robot persigue al mouse pero se detiene a una distancia "segura"
+        const dx = mouse.x - (pos.x + offsetX);
+        const dy = mouse.y - (pos.y + offsetY);
+        const distance = Math.hypot(dx, dy);
+        const stopDist = 100; // Distancia a la que se detiene del mouse
+
+        if (distance > stopDist) {
+          pos.x += (mouse.x - (pos.x + offsetX)) * speed;
+          pos.y += (mouse.y - (pos.y + offsetY)) * speed;
+          atrapado = false;
+          wrapper.classList.remove('vibrate-twice');
+          wrapper.classList.remove('interactable');
+          mensaje.classList.remove('activo');
+        } else {
+          // Si está muy cerca, "Atrapado"
+          if (!atrapado) {
+            atrapado = true;
+            wrapper.classList.add('vibrate-twice');
+            mensaje.classList.add('activo');
+            wrapper.classList.add('interactable');
+            // Vibración dura solo la animación
+            setTimeout(() => wrapper.classList.remove('vibrate-twice'), 500);
+          }
+        }
+
+        wrapper.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+
+        // B) OJOS QUE SIGUEN (LOOKAT)
+        if (pupilaIzq && pupilaDer) {
+          const angle = Math.atan2(dy, dx);
+          const r = Math.min(6, distance / 20); // Radio máximo de movimiento de ojo
+          const ex = Math.cos(angle) * r;
+          const ey = Math.sin(angle) * r;
+          pupilaIzq.style.transform = `translate(${ex}px, ${ey}px)`;
+          pupilaDer.style.transform = `translate(${ex}px, ${ey}px)`;
+        }
+
+        // C) BRAZOS MAGNÉTICOS (IK SIMULADO)
+        // Los brazos intentan alcanzar el mouse (rotación)
+        const armAngle = Math.atan2(dy, dx) * (180 / Math.PI); // Grados
+
+        // Limitamos la rotación para que no se descoyunte
+        // Brazo derecho
+        if (brazoDer) {
+          // Offset de rotación base
+          let rot = armAngle - 90;
+          if (atrapado) rot = 20; // Si atrapa, pose de celebración/agarre
+          brazoDer.style.transformOrigin = "20px 20px"; // Pivote aproximado
+          brazoDer.style.transform = `rotate(${atrapado ? rot : rot * 0.5}deg)`;
+        }
+        // Brazo izquierdo
+        if (brazoIzq) {
+          let rot = armAngle - 90;
+          if (atrapado) rot = -20;
+          brazoIzq.style.transformOrigin = "100px 20px"; // Pivote aproximado
+          brazoIzq.style.transform = `rotate(${atrapado ? rot : rot * 0.5}deg)`;
+        }
+
+        // D) PINZAS (DEDOS)
+        if (atrapado) {
+          dedos.forEach((dedo, i) => {
+            const time = Date.now() * 0.01;
+            const wiggle = Math.sin(time + i) * 15;
+            dedo.style.transformOrigin = "center";
+            dedo.style.transform = `rotate(${wiggle}deg)`;
+          });
+        } else {
+          dedos.forEach(dedo => dedo.style.transform = "rotate(0deg)");
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    });
   </script>
 </body>
 
