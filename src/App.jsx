@@ -67,7 +67,7 @@ const AvantiWebsite = () => {
           </div>
 
           {/* Mobile Toggle */}
-          <button className="md:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          <button className="md:hidden text-white" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}>
             {isMobileMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
@@ -96,7 +96,7 @@ const AvantiWebsite = () => {
               <span className="text-xs font-bold text-cyan-300 uppercase tracking-widest">Inteligencia que se adapta</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-black text-white leading-tight">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-white leading-tight break-words">
               ARQUITECTOS DE <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">ACELERACIÓN</span>
             </h1>
@@ -245,6 +245,7 @@ const AvantiWebsite = () => {
               <img
                 src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
                 alt="Equipo Avanti"
+                loading="lazy"
                 className="w-full h-full object-cover opacity-60 group-hover:opacity-90 transition-opacity duration-700 filter grayscale group-hover:grayscale-0 transform group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1C] via-transparent to-transparent"></div>
@@ -328,13 +329,13 @@ const AvantiWebsite = () => {
 
           <div className="flex flex-col items-center md:items-end gap-4 text-sm font-medium text-slate-400">
             <div className="flex gap-6">
-              <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
-              <a href="#" className="hover:text-white transition-colors">Instagram</a>
-              <a href="https://www.facebook.com/profile.php?id=61587227896126" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Facebook</a>
+              <a href="#" aria-label="LinkedIn" className="hover:text-white transition-colors">LinkedIn</a>
+              <a href="#" aria-label="Instagram" className="hover:text-white transition-colors">Instagram</a>
+              <a href="https://www.facebook.com/profile.php?id=61587227896126" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-white transition-colors">Facebook</a>
             </div>
             <div className="flex flex-col items-center md:items-end gap-1">
-              <a href="mailto:avantidigitaltech@gmail.com" className="hover:text-cyan-400 transition-colors">avantidigitaltech@gmail.com</a>
-              <a href="tel:+573002436120" className="hover:text-cyan-400 transition-colors">+57 300 243 6120</a>
+              <a href="mailto:avantidigitaltech@gmail.com" aria-label="Enviar correo a avantidigitaltech@gmail.com" className="hover:text-cyan-400 transition-colors">avantidigitaltech@gmail.com</a>
+              <a href="tel:+573002436120" aria-label="Llamar al +57 300 243 6120" className="hover:text-cyan-400 transition-colors">+57 300 243 6120</a>
               <p className="text-slate-500 mt-2 text-center md:text-right">Carrera 76 A 3 C 35<br />Medellin - Colombia</p>
             </div>
           </div>
