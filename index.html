@@ -64,6 +64,275 @@
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
+  <!-- RODOLFO BOT -->
+  <style>
+    #rodolfo-wrapper {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      cursor: pointer;
+      width: 100px;
+      height: 120px;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #rodolfo-wrapper:hover {
+      transform: scale(1.05);
+    }
+
+    #rodolfo-wrapper.vibrando {
+      animation: vibration 0.2s linear infinite;
+    }
+
+    @keyframes vibration {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      25% {
+        transform: rotate(2deg);
+      }
+
+      50% {
+        transform: rotate(0deg);
+      }
+
+      75% {
+        transform: rotate(-2deg);
+      }
+
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+
+    #rodolfo-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+    }
+
+    #rodolfo-mensaje {
+      position: absolute;
+      bottom: 110%;
+      /* Above the bot */
+      right: 0;
+      width: 220px;
+      background: white;
+      color: #0F172A;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      text-align: left;
+    }
+
+    #rodolfo-mensaje.activo {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    #rodolfo-mensaje h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: 800;
+      color: #0055CC;
+    }
+
+    #rodolfo-mensaje p {
+      margin: 0 0 12px 0;
+      font-size: 13px;
+      line-height: 1.4;
+      color: #475569;
+    }
+
+    .rodolfo-btn {
+      display: inline-block;
+      background: #0055CC;
+      color: white;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 6px;
+      transition: background 0.2s;
+      width: 100%;
+      text-align: center;
+    }
+
+    .rodolfo-btn:hover {
+      background: #004499;
+    }
+
+    /* Triangulito del mensaje */
+    #rodolfo-mensaje::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      right: 40px;
+      width: 12px;
+      height: 12px;
+      background: white;
+      transform: rotate(45deg);
+    }
+  </style>
+
+  <div id="rodolfo-wrapper">
+    <div id="rodolfo-mensaje">
+      <h3>¡Te atrapé! 🤖</h3>
+      <p>¿Listo para cambiar tu visión del negocio? Usa la IA a tu favor hoy mismo.</p>
+      <a href="https://wa.me/573002436120?text=Hola%20Rodolfo,%20quiero%20saber%20m%C3%A1s%20de%20IA" target="_blank"
+        class="rodolfo-btn">Cuéntanos qué necesitas</a>
+    </div>
+
+    <svg id="rodolfo-svg" viewBox="0 0 262 339" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g id="Frame 1">
+        <g id="brazo-der">
+          <g id="Group 3">
+            <circle id="mano derecha" cx="20" cy="20" r="20" transform="matrix(-1 0 0 1 255.887 188)" fill="#0055CC" />
+            <rect id="Rectangle 6" width="35" height="30"
+              transform="matrix(-0.0105295 -0.999945 -0.999945 0.0105295 250.887 199.998)" fill="#D9D9D9" />
+            <rect id="Rectangle 3" width="35" height="30"
+              transform="matrix(-0.746727 -0.66513 -0.66513 0.746727 235.988 94.7756)" fill="#D9D9D9" />
+            <rect id="Rectangle 7" width="35" height="30"
+              transform="matrix(-0.817961 -0.575274 -0.575274 0.817961 212.887 72.1346)" fill="#D9D9D9" />
+            <rect id="Rectangle 5" width="35" height="30"
+              transform="matrix(-0.0135662 -0.999908 -0.999908 0.0135662 250.887 164.997)" fill="#D9D9D9" />
+            <rect id="Rectangle 4" width="35" height="30"
+              transform="matrix(-0.45301 -0.891505 -0.891505 0.45301 251.244 128.143)" fill="#D9D9D9" />
+            <path id="dedo 3 derecho" d="M251.32 242.804L253.043 215.077L235.522 219.953L251.32 242.804Z"
+              fill="#D9D9D9" />
+            <path id="dedo 2 derecho" d="M216.042 241.158L234.346 220.26L217.496 213.416L216.042 241.158Z"
+              fill="#D9D9D9" />
+          </g>
+        </g>
+        <g id="brazo-izq">
+          <g id="group3">
+            <circle id="mano-izq" cx="25.5486" cy="213" r="20" fill="#0055CC" />
+            <rect id="rectangle6" x="10.5486" y="204.998" width="35" height="30"
+              transform="rotate(-89.3967 10.5486 204.998)" fill="#D9D9D9" />
+            <rect id="rectangle3" x="25.4473" y="99.7756" width="35" height="30"
+              transform="rotate(-41.6923 25.4473 99.7756)" fill="#D9D9D9" />
+            <rect id="rectangle7" x="48.5486" y="77.1346" width="35" height="30"
+              transform="rotate(-35.1188 48.5486 77.1346)" fill="#D9D9D9" />
+            <rect id="rectangle5" x="10.5486" y="169.997" width="35" height="30"
+              transform="rotate(-89.2227 10.5486 169.997)" fill="#D9D9D9" />
+            <rect id="rectangle4" x="10.1917" y="133.143" width="35" height="30"
+              transform="rotate(-63.063 10.1917 133.143)" fill="#D9D9D9" />
+            <path id="dedo3-izq" d="M10.1156 247.804L8.39264 220.077L25.9134 224.953L10.1156 247.804Z" fill="#D9D9D9" />
+            <path id="dedo2-izq" d="M45.393 246.158L27.0896 225.26L43.9392 218.416L45.393 246.158Z" fill="#D9D9D9" />
+          </g>
+        </g>
+        <path id="base-pie" d="M133.5 154L204.081 292H62.9189L133.5 154Z" fill="#444" />
+        <rect id="cuerpo" x="73" y="20" width="120" height="200" rx="60" fill="url(#paint1_linear_4_64)" />
+        <g id="ojo-izq">
+          <circle id="ellipse1b" cx="107" cy="20" r="20" fill="#0055CC" />
+          <circle id="ellipse3b" cx="103" cy="20" r="16" fill="#FAFCFF" />
+          <circle id="pupila-izq" cx="98.5" cy="15.5" r="4.5" fill="black" />
+        </g>
+        <g id="ojo-der">
+          <circle id="ellipse1" cx="157" cy="20" r="20" fill="#0055CC" />
+          <circle id="ellipse3" cx="153" cy="20" r="16" fill="#FAFCFF" />
+          <circle id="pupila-der" cx="148.5" cy="15.5" r="4.5" fill="black" />
+        </g>
+        <rect id="rectangle2" x="119" y="233" width="30" height="10" fill="#0055CC" />
+        <path id="Rodolfo"
+          d="M112.057 66V57.2727H115.006C115.688 57.2727 116.247 57.3892 116.685 57.6222C117.122 57.8523 117.446 58.169 117.656 58.5724C117.866 58.9759 117.972 59.4347 117.972 59.9489C117.972 60.4631 117.866 60.919 117.656 61.3168C117.446 61.7145 117.124 62.027 116.689 62.2543C116.254 62.4787 115.699 62.5909 115.023 62.5909H112.636V61.6364H114.989C115.455 61.6364 115.83 61.5682 116.114 61.4318C116.401 61.2955 116.608 61.1023 116.736 60.8523C116.866 60.5994 116.932 60.2983 116.932 59.9489C116.932 59.5994 116.866 59.294 116.736 59.0327C116.605 58.7713 116.396 58.5696 116.109 58.4276C115.822 58.2827 115.443 58.2102 114.972 58.2102H113.114V66H112.057ZM116.165 62.0795L118.312 66H117.085L114.972 62.0795H116.165ZM122.185 66.1364C121.594 66.1364 121.076 65.9957 120.63 65.7145C120.186 65.4332 119.84 65.0398 119.59 64.5341C119.343 64.0284 119.219 63.4375 119.219 62.7614C119.219 62.0795 119.343 61.4844 119.59 60.9759C119.84 60.4673 120.186 60.0724 120.63 59.7912C121.076 59.5099 121.594 59.3693 122.185 59.3693C122.776 59.3693 123.293 59.5099 123.736 59.7912C124.182 60.0724 124.529 60.4673 124.776 60.9759C125.026 61.4844 125.151 62.0795 125.151 62.7614C125.151 63.4375 125.026 64.0284 124.776 64.5341C124.529 65.0398 124.182 65.4332 123.736 65.7145C123.293 65.9957 122.776 66.1364 122.185 66.1364ZM122.185 65.233C122.634 65.233 123.003 65.1179 123.293 64.8878C123.583 64.6577 123.797 64.3551 123.936 63.9801C124.076 63.6051 124.145 63.1989 124.145 62.7614C124.145 62.3239 124.076 61.9162 123.936 61.5384C123.797 61.1605 123.583 60.8551 123.293 60.6222C123.003 60.3892 122.634 60.2727 122.185 60.2727C121.736 60.2727 121.367 60.3892 121.077 60.6222C120.787 60.8551 120.573 61.1605 120.434 61.5384C120.294 61.9162 120.225 62.3239 120.225 62.7614C120.225 63.1989 120.294 63.6051 120.434 63.9801C120.573 64.3551 120.787 64.6577 121.077 64.8878C121.367 65.1179 121.736 65.233 122.185 65.233ZM129.158 66.1364C128.612 66.1364 128.131 65.9986 127.713 65.723C127.295 65.4446 126.969 65.0526 126.733 64.5469C126.497 64.0384 126.379 63.4375 126.379 62.7443C126.379 62.0568 126.497 61.4602 126.733 60.9545C126.969 60.4489 127.297 60.0582 127.717 59.7827C128.138 59.5071 128.624 59.3693 129.175 59.3693C129.601 59.3693 129.938 59.4403 130.185 59.5824C130.435 59.7216 130.625 59.8807 130.756 60.0597C130.889 60.2358 130.993 60.3807 131.067 60.4943H131.152V57.2727H132.158V66H131.186V64.9943H131.067C130.993 65.1136 130.888 65.2642 130.751 65.446C130.615 65.625 130.42 65.7855 130.168 65.9276C129.915 66.0668 129.578 66.1364 129.158 66.1364ZM129.294 65.233C129.697 65.233 130.038 65.1278 130.317 64.9176C130.595 64.7045 130.807 64.4105 130.952 64.0355C131.097 63.6577 131.169 63.2216 131.169 62.7273C131.169 62.2386 131.098 61.8111 130.956 61.4446C130.814 61.0753 130.604 60.7884 130.325 60.5838C130.047 60.3764 129.703 60.2727 129.294 60.2727C128.868 60.2727 128.513 60.3821 128.229 60.6009C127.947 60.8168 127.736 61.1108 127.594 61.483C127.455 61.8523 127.385 62.267 127.385 62.7273C127.385 63.1932 127.456 63.6165 127.598 63.9972C127.743 64.375 127.956 64.6761 128.237 64.9006C128.521 65.1222 128.874 65.233 129.294 65.233ZM136.798 66.1364C136.207 66.1364 135.689 65.9957 135.243 65.7145C134.8 65.4332 134.453 65.0398 134.203 64.5341C133.956 64.0284 133.832 63.4375 133.832 62.7614C133.832 62.0795 133.956 61.4844 134.203 60.9759C134.453 60.4673 134.8 60.0724 135.243 59.7912C135.689 59.5099 136.207 59.3693 136.798 59.3693C137.389 59.3693 137.906 59.5099 138.349 59.7912C138.795 60.0724 139.142 60.4673 139.389 60.9759C139.639 61.4844 139.764 62.0795 139.764 62.7614C139.764 63.4375 139.639 64.0284 139.389 64.5341C139.142 65.0398 138.795 65.4332 138.349 65.7145C137.906 65.9957 137.389 66.1364 136.798 66.1364ZM136.798 65.233C137.247 65.233 137.616 65.1179 137.906 64.8878C138.196 64.6577 138.411 64.3551 138.55 63.9801C138.689 63.6051 138.759 63.1989 138.759 62.7614C138.759 62.3239 138.689 61.9162 138.55 61.5384C138.411 61.1605 138.196 60.8551 137.906 60.6222C137.616 60.3892 137.247 60.2727 136.798 60.2727C136.349 60.2727 135.98 60.3892 135.69 60.6222C135.401 60.8551 135.186 61.1605 135.047 61.5384C134.908 61.9162 134.838 62.3239 134.838 62.7614C134.838 63.1989 134.908 63.6051 135.047 63.9801C135.186 64.3551 135.401 64.6577 135.69 64.8878C135.98 65.1179 136.349 65.233 136.798 65.233ZM142.305 57.2727V66H141.299V57.2727H142.305ZM147.062 59.4545V60.3068H143.533V59.4545H147.062ZM144.59 66V58.5511C144.59 58.1761 144.678 57.8636 144.854 57.6136C145.031 57.3636 145.259 57.1761 145.54 57.0511C145.822 56.9261 146.119 56.8636 146.431 56.8636C146.678 56.8636 146.88 56.8835 147.036 56.9233C147.192 56.9631 147.309 57 147.386 57.0341L147.096 57.9034C147.045 57.8864 146.974 57.8651 146.883 57.8395C146.795 57.8139 146.678 57.8011 146.533 57.8011C146.201 57.8011 145.961 57.8849 145.813 58.0526C145.668 58.2202 145.596 58.4659 145.596 58.7898V66H144.59ZM150.861 66.1364C150.27 66.1364 149.751 65.9957 149.305 65.7145C148.862 65.4332 148.516 65.0398 148.266 64.5341C148.018 64.0284 147.895 63.4375 147.895 62.7614C147.895 62.0795 148.018 61.4844 148.266 60.9759C148.516 60.4673 148.862 60.0724 149.305 59.7912C149.751 59.5099 150.27 59.3693 150.861 59.3693C151.452 59.3693 151.969 59.5099 152.412 59.7912C152.858 60.0724 153.205 60.4673 153.452 60.9759C153.702 61.4844 153.827 62.0795 153.827 62.7614C153.827 63.4375 153.702 64.0284 153.452 64.5341C153.205 65.0398 152.858 65.4332 152.412 65.7145C151.969 65.9957 151.452 66.1364 150.861 66.1364ZM150.861 65.233C151.31 65.233 151.679 65.1179 151.969 64.8878C152.259 64.6577 152.473 64.3551 152.612 63.9801C152.751 63.6051 152.821 63.1989 152.821 62.7614C152.821 62.3239 152.751 61.9162 152.612 61.5384C152.473 61.1605 152.259 60.8551 151.969 60.6222C151.679 60.3892 151.31 60.2727 150.861 60.2727C150.412 60.2727 150.043 60.3892 149.753 60.6222C149.463 60.8551 149.249 61.1605 149.109 61.5384C148.97 61.9162 148.901 62.3239 148.901 62.7614C148.901 63.1989 148.97 63.6051 149.109 63.9801C149.249 64.3551 149.463 64.6577 149.753 64.8878C150.043 65.1179 150.412 65.233 150.861 65.233Z"
+          fill="white" />
+      </g>
+      <defs>
+        <linearGradient id="paint1_linear_4_64" x1="172" y1="67" x2="84" y2="182" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#5788CC" />
+          <stop offset="1" stop-color="#002B66" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <script>
+        /* =========================================
+           CEREBRO DE RODOLFO (INTELIGENCIA)
+           ========================================= */
+        document.addEventListener("DOMContentLoaded", () => {
+            const wrapper = document.getElementById('rodolfo-wrapper');
+            const mensaje = document.getElementById('rodolfo-mensaje');
+    
+            // Referencias a las partes del robot
+            const pupilaIzq = document.getElementById('pupila-izq');
+            const pupilaDer = document.getElementById('pupila-der');
+            const brazoIzq  = document.getElementById('brazo-izq');
+            const brazoDer  = document.getElementById('brazo-der');
+            const dedos     = wrapper.querySelectorAll('[id*="dedo"]'); 
+    
+            let atrapado = false;
+            const DISTANCIA_ACTIVACION = 250; // Píxeles de cercanía
+    
+            // 1. ESCUCHAR EL MOUSE
+            document.addEventListener('mousemove', (e) => {
+                // Usamos requestAnimationFrame para que sea fluido
+                requestAnimationFrame(() => {
+                    const rect = wrapper.getBoundingClientRect();
+                    const centroX = rect.left + rect.width / 2;
+                    const centroY = rect.top + rect.height / 3; 
+                    
+                    // Distancia entre el mouse y Rodolfo
+                    const distMouse = Math.hypot(e.clientX - centroX, e.clientY - centroY);
+    
+                    // A) MOVER LOS OJOS
+                    if (pupilaIzq && pupilaDer) {
+                        const angulo = Math.atan2(e.clientY - centroY, e.clientX - centroX);
+                        const limite = 6; 
+                        const x = Math.cos(angulo) * Math.min(limite, distMouse / 20);
+                        const y = Math.sin(angulo) * Math.min(limite, distMouse / 20);
+                        
+                        pupilaIzq.style.transform = `translate(${x}px, ${y}px)`;
+                        pupilaDer.style.transform = `translate(${x}px, ${y}px)`;
+                    }
+    
+                    // B) REACCIÓN DE CAZA (ATRAPAR)
+                    if (distMouse < DISTANCIA_ACTIVACION) {
+                        if (!atrapado) {
+                            atrapado = true;
+                            wrapper.classList.add('vibrando');
+                            mensaje.classList.add('activo');
+    
+                            if(brazoIzq) brazoIzq.style.transform = `rotate(-20deg) translateY(-5px)`;
+                            if(brazoDer) brazoDer.style.transform = `rotate(20deg) translateY(-5px)`;
+    
+                            dedos.forEach((dedo, i) => {
+                                const dir = i % 2 === 0 ? 1 : -1;
+                                dedo.style.transform = `rotate(${10 * dir}deg) scale(0.95)`;
+                            });
+                        }
+                    } else {
+                        if (atrapado) {
+                            atrapado = false;
+                            wrapper.classList.remove('vibrando');
+                            mensaje.classList.remove('activo');
+    
+                            if(brazoIzq) brazoIzq.style.transform = `rotate(0deg)`;
+                            if(brazoDer) brazoDer.style.transform = `rotate(0deg)`;
+    
+                            dedos.forEach(dedo => {
+                                dedo.style.transform = `rotate(0deg) scale(1)`;
+                            });
+                        }
+                    }
+                });
+            });
+    
+            // Click en el robot
+            wrapper.addEventListener('click', () => {
+                 console.log("¡Click en Rodolfo!");
+            });
+        });
+  </script>
 </body>
 
 </html>
