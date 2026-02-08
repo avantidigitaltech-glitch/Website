@@ -269,137 +269,143 @@
   </div>
 
   <script>
-        /* =========================================
-           CEREBRO DE RODOLFO 4.0 (PONDERADO & EXACTO)
-           ========================================= */
-        document.addEventListener("DOMContentLoaded", () => {
-            const wrapper = document.getElementById('rodolfo-wrapper');
-            const mensaje = document.getElementById('rodolfo-mensaje');
-    
-            // Referencias
-            const pupilaIzq = document.getElementById('pupila-izq');
-            const pupilaDer = document.getElementById('pupila-der');
-            const brazoIzq  = document.getElementById('brazo-izq'); 
-            const brazoDer  = document.getElementById('brazo-der');
-            const dedos     = wrapper.querySelectorAll('[id*="dedo"]'); 
-            
-            // Estado y Física
-            const pos = { x: window.innerWidth - 150, y: window.innerHeight - 150 }; 
-            const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-            
-            // CONFIGURACIÓN 4.0
-            const SPEED = 0.008; // Ultra lento (pesado)
-            const STOP_DIST = 5; // Llega casi hasta el mismo centro
-            const CATCH_DIST = 30; // Radio de captura exacto (superposición)
-            const EYE_LIMIT = 4;
-            
-            let atrapado = false;
-            // Ajuste fino del centro visual
-            const offsetX = 50; 
-            const offsetY = 60;
+    /* =========================================
+       CEREBRO DE RODOLFO 4.0 (PONDERADO & EXACTO)
+       ========================================= */
+    document.addEventListener("DOMContentLoaded", () => {
+      const wrapper = document.getElementById('rodolfo-wrapper');
+      const mensaje = document.getElementById('rodolfo-mensaje');
 
-            wrapper.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+      // Referencias
+      const pupilaIzq = document.getElementById('pupila-izq');
+      const pupilaDer = document.getElementById('pupila-der');
+      const brazoIzq = document.getElementById('brazo-izq');
+      const brazoDer = document.getElementById('brazo-der');
+      const dedos = wrapper.querySelectorAll('[id*="dedo"]');
 
-            document.addEventListener('mousemove', (e) => {
-                mouse.x = e.clientX;
-                mouse.y = e.clientY;
-            });
+      // Estado y Física
+      const pos = { x: window.innerWidth - 150, y: window.innerHeight - 150 };
+      const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
 
-            // Pivotes para rotación completa desde el hombro
-            if(brazoIzq) {
-                brazoIzq.style.transformBox = "fill-box";
-                brazoIzq.style.transformOrigin = "85% 15%"; 
-            }
-            if(brazoDer) {
-                brazoDer.style.transformBox = "fill-box";
-                brazoDer.style.transformOrigin = "15% 15%"; 
-            }
+      // CONFIGURACIÓN 4.0
+      const SPEED = 0.008; // Ultra lento (pesado)
+      const STOP_DIST = 5; // Llega casi hasta el mismo centro
+      const CATCH_DIST = 30; // Radio de captura exacto (superposición)
+      const EYE_LIMIT = 4;
 
-            function animate() {
-                const dx = mouse.x - (pos.x + offsetX);
-                const dy = mouse.y - (pos.y + offsetY);
-                const dist = Math.hypot(dx, dy);
+      let atrapado = false;
+      // Ajuste fino del centro visual
+      const offsetX = 50;
+      const offsetY = 60;
 
-                // A) MOVIMIENTO DE GIGANTE (LENTO Y PESADO)
-                if (dist > STOP_DIST) {
-                   pos.x += dx * SPEED;
-                   pos.y += dy * SPEED;
-                   
-                   // Si sale del radio exacto, soltar
-                   if(atrapado && dist > CATCH_DIST + 20) {
-                       atrapado = false;
-                       wrapper.classList.remove('vibrate-twice');
-                       wrapper.classList.remove('interactable'); 
-                       mensaje.classList.remove('activo');
-                   }
-                }
+      wrapper.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
 
-                // CATCH: Solo si hay superposición real (centro sobre mouse)
-                if (dist < CATCH_DIST && !atrapado) {
-                    atrapado = true;
-                    wrapper.classList.add('vibrate-twice');
-                    mensaje.classList.add('activo');
-                    wrapper.classList.add('interactable');
-                    setTimeout(() => wrapper.classList.remove('vibrate-twice'), 500);
-                }
+      document.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
 
-                wrapper.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+      // Pivotes para rotación completa desde el hombro
+      if (brazoIzq) {
+        brazoIzq.style.transformBox = "fill-box";
+        brazoIzq.style.transformOrigin = "85% 15%";
+      }
+      if (brazoDer) {
+        brazoDer.style.transformBox = "fill-box";
+        brazoDer.style.transformOrigin = "15% 15%";
+      }
 
-                // B) PUPILAS SIEMPRE ATENTAS
-                if (pupilaIzq && pupilaDer) {
-                    const angle = Math.atan2(dy, dx);
-                    const r = Math.min(EYE_LIMIT, dist / 40); 
-                    const ex = Math.cos(angle) * r;
-                    const ey = Math.sin(angle) * r;
-                    pupilaIzq.style.transform = `translate(${ex}px, ${ey}px)`;
-                    pupilaDer.style.transform = `translate(${ex}px, ${ey}px)`;
-                }
+      function animate() {
+        const dx = mouse.x - (pos.x + offsetX);
+        const dy = mouse.y - (pos.y + offsetY);
+        const dist = Math.hypot(dx, dy);
 
-                // C) BRAZOS OMNIDIRECCIONALES (PUEDEN ALZARSE)
-                const degrees = (Math.atan2(dy, dx) * 180 / Math.PI);
-                
-                // Calculamos rotación base apuntando al mouse
-                let rotDer = degrees - 90; 
-                let rotIzq = degrees - 90;
+        // A) LÓGICA DE MOVIMIENTO VS ESTADO
+        if (!atrapado) {
+          // Si no está atrapado, persigue
+          if (dist > STOP_DIST) {
+            pos.x += dx * SPEED;
+            pos.y += dy * SPEED;
+          }
 
-                // Si está atrapado, pose de "ABRAZO" (cerrar brazos)
-                if(atrapado) {
-                    rotDer = 45; // Hacia adentro
-                    rotIzq = -45; // Hacia adentro
-                } else {
-                     // Límites biomecánicos simulados, pero permitiendo levantar brazos
-                     // Brazo Derecho: Rango -160 (arriba) a 60 (abajo)
-                     if(rotDer < -160) rotDer = -160;
-                     if(rotDer > 60) rotDer = 60;
+          // Verificar si atrapa (Superposición)
+          if (dist < CATCH_DIST) {
+            atrapado = true;
+            // Feedback visual
+            wrapper.classList.add('vibrate-twice');
+            mensaje.classList.add('activo');
+            wrapper.classList.add('interactable');
+            setTimeout(() => wrapper.classList.remove('vibrate-twice'), 500);
+            // AL ACTIVARSE, DEJA DE MOVERSE (Freezes in place)
+          }
+        } else {
+          // Si ESTÁ atrapado, NO actualizamos pos.x/pos.y (Se queda quieto)
 
-                     // Brazo Izquierdo: Rango -60 (abajo) a 160 (arriba)
-                     // Nota: atan2 devuelve -180 a 180. Ajustar lógica para izq.
-                     // Simplificación: espejo
-                     if(rotIzq < -60) rotIzq = -60; // No cruzar cuerpo abajo
-                     if(rotIzq > 160) rotIzq = 160; // No romperse arriba
-                }
+          // Verificar si se suelta (Si el usuario se aleja mucho)
+          if (dist > CATCH_DIST + 60) { // Hysteresis (holgura para no parpadear)
+            atrapado = false;
+            wrapper.classList.remove('interactable');
+            mensaje.classList.remove('activo');
+          }
+        }
 
-                if(brazoDer) brazoDer.style.transform = `rotate(${rotDer}deg)`;
-                if(brazoIzq) brazoIzq.style.transform = `rotate(${rotIzq}deg)`;
+        wrapper.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
 
-                // D) DEDOS ACTIVOS
-                if (atrapado) {
-                    dedos.forEach((dedo, i) => {
-                        const t = Date.now() * 0.003; 
-                        const val = Math.sin(t + i) * 20;
-                        dedo.style.transformBox = "fill-box";
-                        dedo.style.transformOrigin = "center";
-                        dedo.style.transform = `rotate(${val}deg)`;
-                    });
-                } else {
-                    dedos.forEach(dedo => dedo.style.transform = "rotate(0deg)");
-                }
+        // B) PUPILAS SIEMPRE ATENTAS
+        if (pupilaIzq && pupilaDer) {
+          const angle = Math.atan2(dy, dx);
+          const r = Math.min(EYE_LIMIT, dist / 40);
+          const ex = Math.cos(angle) * r;
+          const ey = Math.sin(angle) * r;
+          pupilaIzq.style.transform = `translate(${ex}px, ${ey}px)`;
+          pupilaDer.style.transform = `translate(${ex}px, ${ey}px)`;
+        }
 
-                requestAnimationFrame(animate);
-            }
+        // C) BRAZOS OMNIDIRECCIONALES (PUEDEN ALZARSE)
+        const degrees = (Math.atan2(dy, dx) * 180 / Math.PI);
 
-            animate();
-        });
+        // Calculamos rotación base apuntando al mouse
+        let rotDer = degrees - 90;
+        let rotIzq = degrees - 90;
+
+        // Si está atrapado, pose de "ABRAZO" (cerrar brazos)
+        if (atrapado) {
+          rotDer = 45; // Hacia adentro
+          rotIzq = -45; // Hacia adentro
+        } else {
+          // Límites biomecánicos simulados, pero permitiendo levantar brazos
+          // Brazo Derecho: Rango -160 (arriba) a 60 (abajo)
+          if (rotDer < -160) rotDer = -160;
+          if (rotDer > 60) rotDer = 60;
+
+          // Brazo Izquierdo: Rango -60 (abajo) a 160 (arriba)
+          // Nota: atan2 devuelve -180 a 180. Ajustar lógica para izq.
+          // Simplificación: espejo
+          if (rotIzq < -60) rotIzq = -60; // No cruzar cuerpo abajo
+          if (rotIzq > 160) rotIzq = 160; // No romperse arriba
+        }
+
+        if (brazoDer) brazoDer.style.transform = `rotate(${rotDer}deg)`;
+        if (brazoIzq) brazoIzq.style.transform = `rotate(${rotIzq}deg)`;
+
+        // D) DEDOS ACTIVOS
+        if (atrapado) {
+          dedos.forEach((dedo, i) => {
+            const t = Date.now() * 0.003;
+            const val = Math.sin(t + i) * 20;
+            dedo.style.transformBox = "fill-box";
+            dedo.style.transformOrigin = "center";
+            dedo.style.transform = `rotate(${val}deg)`;
+          });
+        } else {
+          dedos.forEach(dedo => dedo.style.transform = "rotate(0deg)");
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    });
   </script>
 </body>
 
